@@ -49,7 +49,9 @@ velero backup create mon-backup --include-namespaces csi-app --wait
 
 # Vérifier
 velero backup describe mon-backup
+
 kubectl get volumesnapshot -n csi-app
+
 kubectl get backups.longhorn.io -n longhorn-system
 
 Restaurer un backup
