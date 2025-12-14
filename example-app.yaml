@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: csi-app
+  labels:
+    app: nginx-test
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: csi-pvc
+  namespace: csi-app
+  labels:
+    app: nginx-test
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csi-nginx
+  namespace: csi-app
+  labels:
+    app: nginx-test
+spec:
+  containers:
+  - name: nginx
+    image: nginx:alpine
+    volumeMounts:
+    - name: longhorn-vol
+      mountPath: /mnt/longhorndisk
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "100m"
+      limits:
+        memory: "128Mi"
+        cpu: "200m"
+  volumes:
+  - name: longhorn-vol
+    persistentVolumeClaim:
+      claimName: csi-pvc
