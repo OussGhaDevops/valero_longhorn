@@ -1,0 +1,28 @@
+# Configuration Helm pour Longhorn
+defaultSettings:
+  backupTarget: s3://longhorn@us-east-1/
+  backupTargetCredentialSecret: minio-secret
+  defaultReplicaCount: 1
+  guaranteedEngineManagerCPU: 5
+  guaranteedReplicaManagerCPU: 5
+  storageMinimalAvailablePercentage: 10
+  backupstorePollInterval: 300
+
+persistence:
+  defaultClass: true
+  defaultClassReplicaCount: 1
+
+csi:
+  attacherReplicaCount: 1
+  provisionerReplicaCount: 1
+  resizerReplicaCount: 1
+  snapshotterReplicaCount: 1
+
+longhornManager:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
